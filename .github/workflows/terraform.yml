@@ -32,3 +32,6 @@ jobs:
       - name: "Run - Terraform Plan"
         id: plan
         run: terraform plan -input=false -no-color
+      - name: "Run - Terraform Apply"
+        id: apply
+        run: terraform apply -input=false -no-color
