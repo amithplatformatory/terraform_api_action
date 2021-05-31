@@ -2,7 +2,7 @@ name: 'Terraform GitHub Actions'
 on:
   push:
     branches:
-      - "create_cluster"
+      - "main"
 jobs:
   terraform-plan:
     name: "Terraform Plan"
