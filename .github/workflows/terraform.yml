@@ -1,25 +1,34 @@
-
 name: 'Terraform GitHub Actions'
 on:
-  - pull_request
-  - push
+  push:
+    branches:
+      - "create_cluster"
 jobs:
-  terraform:
-    name: 'Terraform'
+  terraform-plan:
+    name: "Terraform Plan"
     runs-on: ubuntu-latest
     steps:
-      - name: 'Checkout'
+      # Checkout the code
+      # Marketplace: https://github.com/marketplace/actions/checkout
+      - name: "Setup - Checkout"
         uses: actions/checkout@master
-      - name: 'Terraform Format'
-        uses: hashicorp/terraform-github-actions@master
-        with:
-          tf_actions_version: 0.12.18
-          tf_actions_subcommand: 'init'
-        env:
-          GITHUB_TOKEN: ${{ secrets.TF_API_TOKEN }}
 
-      - name: 'Terraform Plan'
-        run: terraform plan 
-      - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve
+      - name: "Setup - Build AWS Credentials"
+        run: |
+          mkdir -p ~/.aws
+          echo "[default]" > ~/.aws/credentials
+          echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
+          echo "aws_secret_access_key = ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
+      - name: "Setup - Terraform CLI"
+        uses: hashicorp/setup-terraform@v1.3.2
+
+      # Init pulls credentials from the .aws/credentials file by default
+      - name: "Run - Terraform Init"
+        run: terraform init -input=false
+
+
+      # The id value is used for reference in the comment step via "steps.plan.outputs.stdout"
+      # Note: Color is disabled to prevent messy characters from appearing in the pull request comment
+      - name: "Run - Terraform Plan"
+        id: plan
+        run: terraform plan -input=false -no-color
