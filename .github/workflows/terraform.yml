@@ -34,4 +34,4 @@ jobs:
         run: terraform plan -input=false -no-color
       - name: "Run - Terraform Apply"
         id: apply
-        run: terraform apply -input=yes -no-color
+        run: terraform apply -auto-approve
