@@ -1,5 +1,5 @@
 variable "aws_region" {
-  default     = "us-west-2"
+  default     = "ap-south-1"
   description = "AWS Region to deploy second API Gateway REST API"
   type        = string
 }
