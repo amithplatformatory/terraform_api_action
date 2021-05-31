@@ -1,17 +1,17 @@
 variable "aws_region" {
   default     = "ap-south-1"
-  description = "AWS Region to deploy second API Gateway REST API"
+  description = "AWS Region to deploy third API Gateway REST API"
   type        = string
 }
 
 variable "rest_api_domain_name" {
-  default     = "second.com"
+  default     = "third.com"
   description = "Domain name of the API Gateway REST API for self-signed TLS certificate"
   type        = string
 }
 
 variable "rest_api_name" {
-  default     = "api-gateway-rest-api-openapi-second"
+  default     = "api-gateway-rest-api-openapi-third"
   description = "Name of the API Gateway REST API (can be used to trigger redeployments)"
   type        = string
 }
